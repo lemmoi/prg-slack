@@ -4,7 +4,9 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
 user_id TEXT PRIMARY KEY,
-name TEXT NOT NULL );
+name TEXT NOT NULL,
+first_name TEXT,
+last_name TEXT);
 
 
 CREATE TABLE rand_messages (

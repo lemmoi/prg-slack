@@ -45,9 +45,19 @@ class UserProcessor(Processor):
         print(f"{self.processed}/? users processed for {self.table}")
 
     def insert_user(self, entry):
-        # Unfortunately we can't use substitution syntax for table names,
-        # so this is a less than ideal solution, but it will do
-        sql = f"INSERT INTO {self.table} (user_id, name) VALUES (:id, :name);"
+        # Try using the first/lst name if the set it, otherwise fall back
+        # to the username
+        if 'first_name' in entry['profile']:
+            entry['first_name'] = entry['profile']['first_name']
+            
+            if 'last_name' in entry['profile']:
+                entry['last_name'] = entry['profile']['last_name']
+            else:
+                entry['last_name'] = "" 
+
+            sql = f"INSERT INTO {self.table} (user_id, name, first_name, last_name) VALUES (:id, :name, :first_name, :last_name);"
+        else:
+            sql = f"INSERT INTO {self.table} (user_id, name) VALUES (:id, :name);"
         cur = self.conn.cursor()
         cur.execute(sql, entry)
 

@@ -15,7 +15,10 @@ def replace_name(conn, user, tables):
         sql = (f"UPDATE {table} "
                "SET msg_text = REPLACE(msg_text, ?, ?);")
 
-        cur.execute(sql, (f"<@{user[0]}>", user[1]))
+        if user[2] is None:
+            cur.execute(sql, (f"<@{user[0]}>", user[1]))
+        else:
+            cur.execute(sql, (f"<@{user[0]}>", user[2]))
 
 
 def remove_all_tags(conn, tables):
